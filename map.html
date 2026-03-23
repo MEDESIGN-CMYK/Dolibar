@@ -53,7 +53,7 @@ button{margin-top:0;padding:12px;border-radius:10px;border:none;font-weight:600;
       <p class="text-xs md:text-sm text-slate-500">Affichage intégré de la carte Dolibarr</p>
     </div>
     <div class="ml-auto flex items-center gap-2">
-      <a href="index.html" class="btnOutline h-11 px-4 rounded-xl flex items-center">Retour</a>
+      <a id="return-home" href="index.html" class="btnOutline h-11 px-4 rounded-xl flex items-center">Retour</a>
       <a href="https://dolibarr.liger-cd.com/custom/dolicommap/map.php?idmenu=130&mainmenu=dolicommap&leftmenu=" target="_blank" rel="noopener" class="h-11 px-4 rounded-xl flex items-center">Ouvrir dans Dolibarr</a>
     </div>
   </div>
@@ -219,6 +219,13 @@ button{margin-top:0;padding:12px;border-radius:10px;border:none;font-weight:600;
   });
   // Démarre en mode local (icônes)
   initLeaflet();
+  // Corrige le lien Retour avec l’origine courante
+  (function(){
+    var a = document.getElementById('return-home');
+    if(a && window && window.location){
+      a.setAttribute('href', new URL('index.html', window.location.href).toString());
+    }
+  })();
 </script>
 </body>
 </html>

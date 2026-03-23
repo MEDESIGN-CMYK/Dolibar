@@ -456,7 +456,7 @@ input,select{
           <input value="0.5" class="md:col-span-2 h-11 rounded-xl border border-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue/60" />
         </div>
         <div class="mt-6 flex items-center gap-3">
-          <a href="map-model.html" class="btnOutline btnInline h-11 px-4 rounded-xl flex items-center">Retour à la carte</a>
+          <a id="return-to-map" href="map-model.html" class="btnOutline btnInline h-11 px-4 rounded-xl flex items-center">Retour à la carte</a>
           <button class="btnInline h-11 px-4 rounded-xl bg-[#273d5b] text-white font-semibold shadow-md hover:opacity-90 transition">Sauvegarder la configuration</button>
         </div>
       </div>
@@ -544,6 +544,12 @@ input,select{
       }
     });
   });
+  (function(){
+    var a = document.getElementById('return-to-map');
+    if(a && window && window.location){
+      a.setAttribute('href', window.location.origin.replace(/\/+$/,'') + '/map-model.html');
+    }
+  })();
 </script>
 </body>
 </html>
