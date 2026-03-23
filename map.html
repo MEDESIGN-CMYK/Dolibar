@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Carte CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: { brand: { blue: '#3b82f6', green: '#22c55e', gold: '#f59e0b' } },
+        boxShadow: { card: '0 8px 24px rgba(15,23,42,.06)', cardHover: '0 16px 40px rgba(15,23,42,.12)' }
+      }
+    }
+  }
+  </script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter, sans-serif;background:linear-gradient(180deg,#f8fafc 0%, #ffffff 40%);color:#0f172a}
+.container{max-width:1200px;margin:auto;padding:40px 20px;position:relative;z-index:1}
+button{margin-top:0;padding:12px;border-radius:10px;border:none;font-weight:600;cursor:pointer;background:#273d5b;color:#ffffff;box-shadow:none!important}
+.btnOutline{background:#fff;color:#0f172a;border:1px solid #e5e7eb;box-shadow:none}
+.iconAcc{width:40px;height:40px;border-radius:12px;background:#273d5b;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(15,23,42,.12)}
+.iconAcc svg{width:22px;height:22px;stroke:#fff}
+.waves{position:absolute;inset:0 0 auto 0;height:220px;overflow:hidden;z-index:0}
+.header{position:relative;z-index:1}
+.chip{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:9999px;border:1px solid #e5e7eb;background:#f8fafc;color:#1f2937;font-weight:600;font-size:12px;cursor:default}
+.chipStat{gap:6px}
+.chipFilter{cursor:pointer;user-select:none}
+.pin{width:28px;height:28px;border-radius:9999px;border:2px solid #273d5b;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.pin-client{background:#16a34a}
+.pin-prospect-chaud{background:#f97316}
+.pin-prospect{background:#3b82f6}
+.pin-fournisseur{background:#a855f7}
+.pin-autre{background:#6b7280}
+</style>
+</head>
+<body>
+<div class="waves">
+  <svg width="100%" height="140" viewBox="0 0 1440 140" preserveAspectRatio="none">
+    <path d="M0,56 C300,120 420,20 720,60 C1020,100 1170,80 1440,40 L1440,140 L0,140 Z" fill="#f1f5f9"></path>
+  </svg>
+</div>
+<div class="container">
+  <div class="header mb-6 flex items-center gap-3">
+    <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 8 3 16 6 23 3 23 17 16 20 8 17 1 20 1 6"></polygon><line x1="8" y1="17" x2="8" y2="3"></line><line x1="16" y1="20" x2="16" y2="6"></line></svg></div>
+    <div>
+      <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight m-0">Carte CRM</h1>
+      <p class="text-xs md:text-sm text-slate-500">Affichage intégré de la carte Dolibarr</p>
+    </div>
+    <div class="ml-auto flex items-center gap-2">
+      <a href="index.html" class="btnOutline h-11 px-4 rounded-xl flex items-center">Retour</a>
+      <a href="https://dolibarr.liger-cd.com/custom/dolicommap/map.php?idmenu=130&mainmenu=dolicommap&leftmenu=" target="_blank" rel="noopener" class="h-11 px-4 rounded-xl flex items-center">Ouvrir dans Dolibarr</a>
+    </div>
+  </div>
+
+  <div class="rounded-2xl border border-slate-200 bg-white shadow-card overflow-hidden">
+    <div class="flex items-center gap-3 px-6 h-[64px] border-b border-slate-100">
+      <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M3 12h18"></path><path d="M3 18h18"></path></svg></div>
+      <div>
+        <h2 class="text-[18px] m-0 font-semibold">Vue cartographique</h2>
+        <p class="text-xs text-slate-500">Chargée depuis l’instance Dolibarr</p>
+      </div>
+      <div class="ml-auto flex items-center gap-2">
+        <button id="toggleSource" class="h-10 px-4 rounded-xl">Afficher Dolibarr</button>
+        <button id="reload" class="h-10 px-4 rounded-xl">Rafraîchir</button>
+      </div>
+    </div>
+    <div class="px-6 py-4 space-y-4 border-b border-slate-100">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="chip chipStat">Tiers affichés <strong>251</strong></span>
+        <span class="chip chipStat">Clients <strong>0</strong></span>
+        <span class="chip chipStat">Prospects <strong>0</strong></span>
+      </div>
+      <div class="grid md:grid-cols-4 gap-3">
+        <label class="flex flex-col gap-1">
+          <span class="text-xs text-slate-500 font-semibold">Type</span>
+          <select id="f-type" class="h-10 rounded-xl border border-slate-300 px-3">
+            <option value="">Tous</option>
+            <option>Client actif</option>
+            <option>Prospect chaud</option>
+            <option>Prospect</option>
+            <option>Fournisseur</option>
+            <option>Autre</option>
+          </select>
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-xs text-slate-500 font-semibold">Code postal</span>
+          <input id="f-cp" placeholder="75001" class="h-10 rounded-xl border border-slate-300 px-3" />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-xs text-slate-500 font-semibold">🏷️ Tag client</span>
+          <input id="f-tag" placeholder="VIP, Nord, ..." class="h-10 rounded-xl border border-slate-300 px-3" />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-xs text-slate-500 font-semibold">Centrer sur (ID tiers)</span>
+          <input id="f-center" placeholder="ex: 1234" class="h-10 rounded-xl border border-slate-300 px-3" />
+        </label>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="reset" type="button" class="btnOutline h-10 px-4 rounded-xl flex items-center gap-1">✖ Reset</button>
+        <button type="button" class="h-10 px-4 rounded-xl">+ Nouvelle tournée</button>
+        <button type="button" class="h-10 px-4 rounded-xl">🎯 Prospection</button>
+        <div class="ml-auto flex items-center gap-2">
+          <span class="chip chipFilter" data-chip data-cat="client-actif">✓ Client actif</span>
+          <span class="chip chipFilter" data-chip data-cat="prospect-chaud">🔥 Prospect chaud</span>
+          <span class="chip chipFilter" data-chip data-cat="prospect">🎯 Prospect</span>
+          <span class="chip chipFilter" data-chip data-cat="fournisseur">🏭 Fournisseur</span>
+          <span class="chip chipFilter" data-chip data-cat="autre">✳️ Autre</span>
+        </div>
+      </div>
+      <div class="text-xs text-slate-500">2000 tiers géolocalisés</div>
+    </div>
+    <div class="p-0">
+      <div id="leafmap" style="width:100%;height:75vh"></div>
+      <iframe id="dolimap" class="hidden" src="https://dolibarr.liger-cd.com/custom/dolicommap/map.php?idmenu=130&mainmenu=dolicommap&leftmenu=" style="width:100%;height:75vh;border:0"></iframe>
+      <div id="fallback" class="hidden p-6 text-sm text-slate-600">
+        Impossible d’afficher la carte intégrée. Ouvrez-la directement
+        <a class="text-[#273d5b] underline" href="https://dolibarr.liger-cd.com/custom/dolicommap/map.php?idmenu=130&mainmenu=dolicommap&leftmenu=" target="_blank" rel="noopener">dans une nouvelle fenêtre</a>.
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var leafMap;
+  var markers = [];
+  var data = [
+    {lat:48.8566, lng:2.3522, cat:'client-actif', label:'Client Paris', sym:'✓'},
+    {lat:45.7640, lng:4.8357, cat:'prospect-chaud', label:'Prospect chaud Lyon', sym:'🔥'},
+    {lat:43.2965, lng:5.3698, cat:'prospect', label:'Prospect Marseille', sym:'🎯'},
+    {lat:47.2184, lng:-1.5536, cat:'fournisseur', label:'Fournisseur Nantes', sym:'🏭'},
+    {lat:44.8378, lng:-0.5792, cat:'autre', label:'Autre Bordeaux', sym:'✳️'},
+  ];
+  function buildIcon(cat, sym){
+    return L.divIcon({
+      className:'', html:'<div class="pin pin-'+cat+'">'+sym+'</div>', iconSize:[28,28], iconAnchor:[14,14]
+    });
+  }
+  function refreshMarkers(){
+    if(!leafMap) return;
+    markers.forEach(m => leafMap.removeLayer(m));
+    markers = [];
+    var activeCats = new Set();
+    document.querySelectorAll('[data-chip]').forEach(function(c){
+      if(c.classList.contains('active')) activeCats.add(c.getAttribute('data-cat'));
+    });
+    if(activeCats.size===0){
+      ['client-actif','prospect-chaud','prospect','fournisseur','autre'].forEach(x=>activeCats.add(x));
+    }
+    var shown = 0;
+    data.forEach(function(d){
+      if(!activeCats.has(d.cat)) return;
+      var mk = L.marker([d.lat,d.lng], {icon: buildIcon(d.cat, d.sym)}).addTo(leafMap).bindPopup(d.label);
+      markers.push(mk);
+      shown++;
+    });
+    var count = document.querySelector('.chipStat strong');
+    if(count){ count.textContent = String(shown); }
+  }
+  function initLeaflet(){
+    if(leafMap) return;
+    var lm = document.getElementById('leafmap');
+    if(!lm) return;
+    try{
+      leafMap = L.map('leafmap').setView([46.6, 2.4], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+      }).addTo(leafMap);
+      refreshMarkers();
+    }catch(e){}
+  }
+  function useLocal(){
+    var f = document.getElementById('dolimap');
+    var lm = document.getElementById('leafmap');
+    f.classList.add('hidden');
+    lm.classList.remove('hidden');
+    initLeaflet();
+    var t = document.getElementById('toggleSource');
+    if(t) t.textContent = 'Afficher Dolibarr';
+  }
+  function useDolibarr(){
+    var f = document.getElementById('dolimap');
+    var lm = document.getElementById('leafmap');
+    lm.classList.add('hidden');
+    f.classList.remove('hidden');
+    var t = document.getElementById('toggleSource');
+    if(t) t.textContent = 'Afficher Local (icônes)';
+  }
+  document.getElementById('toggleSource').addEventListener('click', function(){
+    var f = document.getElementById('dolimap');
+    if(f.classList.contains('hidden')) useDolibarr(); else useLocal();
+  });
+  document.getElementById('reload').addEventListener('click', function(){
+    var f = document.getElementById('dolimap');
+    if(f.classList.contains('hidden')){
+      if(leafMap){ leafMap.setView([46.6,2.4],5); refreshMarkers(); }
+    }else{
+      try { f.contentWindow.location.reload(); } catch(e) { f.src = f.src; }
+    }
+  });
+  document.getElementById('reset').addEventListener('click', function(){
+    ['f-type','f-cp','f-tag','f-center'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+    document.querySelectorAll('[data-chip]').forEach(function(c){ c.classList.remove('bg-[#273d5b]','text-white'); c.style.background=''; c.style.color=''; });
+    if(leafMap){ leafMap.setView([46.6,2.4],5); }
+    refreshMarkers();
+  });
+  document.querySelectorAll('[data-chip]').forEach(function(c){
+    c.addEventListener('click', function(){
+      var active = c.classList.toggle('active');
+      if(active){ c.style.background = '#273d5b'; c.style.color = '#fff'; }
+      else { c.style.background = ''; c.style.color=''; }
+      refreshMarkers();
+    });
+  });
+  // Démarre en mode local (icônes)
+  initLeaflet();
+</script>
+</body>
+</html>
