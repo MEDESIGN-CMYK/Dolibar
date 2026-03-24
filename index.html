@@ -29,6 +29,20 @@ body{
   background:linear-gradient(180deg,#f8fafc 0%, #ffffff 40%);
   color:#0f172a;
 }
+.hideOnMenu{display:none}
+.contentPad{padding:25px}
+.sidebar{transition:width .2s ease; position:relative; z-index:50}
+.menuCollapsed .sidebar{width:80px; position:relative; z-index:40}
+.menuCollapsed .navLabel{display:none}
+.menuCollapsed #menu-search{display:none}
+.menuCollapsed .searchDivider{display:none}
+.menuCollapsed aside nav{padding:8px}
+.menuCollapsed aside nav a{justify-content:center;gap:0;height:56px;padding:0;margin:6px 8px;border-radius:12px}
+.menuCollapsed aside nav .h-px{display:none}
+.menuCollapsed aside nav a .iconAcc{margin:0;width:36px;height:36px}
+.menuCollapsed aside nav a{position:relative}
+.menuCollapsed aside nav a[data-tip]::after{content:attr(data-tip);position:absolute;left:74px;top:50%;transform:translateY(-50%);background:#273d5b;color:#fff;font-size:12px;padding:6px 8px;border-radius:8px;white-space:nowrap;box-shadow:0 8px 24px rgba(15,23,42,.18);opacity:0;pointer-events:none;transition:opacity .15s ease; z-index:9999}
+.menuCollapsed aside nav a:hover::after{opacity:1}
 .container{
   max-width:1200px;
   margin:auto;
@@ -316,111 +330,158 @@ input,select{
   </svg>
 </div>
 <div class="container">
-  <div class="mb-6 relative">
-    <div class="absolute -inset-x-4 -top-2 h-16 rounded-3xl bg-gradient-to-r from-brand-blue/10 to-brand-green/10 blur-xl"></div>
-    <div class="relative flex items-center gap-3">
-      <div class="px-2.5 h-6 rounded-full bg-gradient-to-r from-brand-blue to-brand-green text-white text-[11px] font-bold tracking-wide flex items-center">OFFRES</div>
-      <div>
-        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight m-0 bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">Packs CRM Cartographique</h1>
-        <p class="text-xs md:text-sm text-slate-500">Choisissez l’offre adaptée à vos besoins</p>
-      </div>
-    </div>
-    <div class="relative mt-3 h-[6px] w-32 rounded-full bg-gradient-to-r from-brand-blue to-brand-green"></div>
-  </div>
-  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    <article class="glow group relative rounded-2xl border border-slate-200 bg-white shadow-card hover:shadow-cardHover hover:-translate-y-1 transition">
-      <span class="glow-border"><span class="glow-spot c1"></span><span class="glow-spot c2"></span></span>
-      <div class="flex items-center gap-3 px-6 pt-6">
-        <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow flex items-center justify-center text-lg">🥉</div>
-        <div>
-          <h2 class="text-[18px] m-0 font-semibold">Essentiel</h2>
-          <p class="text-xs text-slate-500">Démarrer avec la cartographie CRM</p>
+  <!-- Packs dupliqués supprimés -->
+  <div class="md:flex gap-0 border border-slate-200 bg-white shadow-card overflow-hidden mt-8">
+    <aside class="sidebar md:w-60 border-r border-slate-200">
+      <nav class="p-2">
+        <div class="px-2 pb-2 flex items-center justify-end">
+          <button id="toggle-menu" class="w-9 h-9 rounded-xl border border-slate-300 bg-white flex items-center justify-center">
+            <svg id="menu-chevron" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
         </div>
-      </div>
-      <div class="px-6">
-        <div class="mt-3 text-2xl font-bold">250€ <span class="text-sm font-semibold text-slate-500">/ an</span></div>
-        <ul class="mt-3 space-y-2.5 text-sm">
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Carte clients & prospects</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Filtres avancés</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Fiche tiers avec carte</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Export géographique</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Compatible mobile</li>
-        </ul>
-        <div class="mt-2">
-          <button type="button" class="linkToggle text-xs font-semibold underline hover:opacity-80" data-toggle data-target="limits-essential">Voir limites</button>
-          <div id="limits-essential" class="mt-2 text-xs text-slate-600 hidden">
-            <div class="flex items-center gap-2"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>Optimisation des tournées</span></div>
-            <div class="flex items-center gap-2 mt-1"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>Heatmap CA</span></div>
-            <div class="flex items-center gap-2 mt-1"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>IA prédictive</span></div>
+        <div class="px-2 pb-2">
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input id="menu-search" type="text" placeholder="Recherche menu" class="w-full h-10 pl-9 pr-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue/60" />
           </div>
         </div>
-      </div>
-      <div class="px-6 pb-6 mt-4">
-        <button class="w-full h-11 rounded-xl text-white font-semibold bg-[#273d5b] hover:opacity-90 shadow-md transition">Activer</button>
-      </div>
-    </article>
-
-    <article class="glow group relative rounded-2xl border border-slate-200 bg-white shadow-card hover:shadow-cardHover hover:-translate-y-1 transition">
-      <span class="glow-border"><span class="glow-spot c1"></span><span class="glow-spot c2"></span></span>
-      <div class="flex items-center gap-3 px-6 pt-6">
-        <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow flex items-center justify-center text-lg">🥈</div>
-        <div>
-          <h2 class="text-[18px] m-0 font-semibold">Pro</h2>
-          <p class="text-xs text-slate-500">Optimisation et ciblage avancés</p>
-        </div>
-      </div>
-      <div class="px-6">
-        <div class="mt-3 text-2xl font-bold">450€ <span class="text-sm font-semibold text-slate-500">/ an</span></div>
-        <ul class="mt-3 space-y-2.5 text-sm">
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Tout Essentiel</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Optimisation tournées</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Heatmap CA</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Ciblage par rayon</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Campagnes depuis carte</li>
-        </ul>
-        <div class="mt-2">
-          <button type="button" class="linkToggle text-xs font-semibold underline hover:opacity-80" data-toggle data-target="limits-pro">Voir limites</button>
-          <div id="limits-pro" class="mt-2 text-xs text-slate-600 hidden">
-            <div class="flex items-center gap-2"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>IA prédictive</span></div>
-            <div class="flex items-center gap-2 mt-1"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>API REST</span></div>
-            <div class="flex items-center gap-2 mt-1"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>Multi-entités</span></div>
+        <div class="h-px my-2 bg-slate-100 searchDivider"></div>
+        <a href="index.html" class="flex items-center gap-3 px-3 h-11 hover:bg-slate-50 transition" data-tip="Packs CRM Cartographique">
+          <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8l-9-4-9 4v8l9 4 9-4z"></path><path d="M3 8l9 4 9-4"></path><path d="M12 12v8"></path></svg></div>
+          <span class="text-sm font-semibold navLabel">DOLIcomMAP</span>
+        </a>
+        <div class="h-px my-2 bg-slate-100"></div>
+        <a href="map.html" class="flex items-center gap-3 px-3 h-11 hover:bg-slate-50 transition" data-tip="Carte des tiers">
+          <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 8 3 16 6 23 3 23 17 16 20 8 17 1 20 1 6"></polygon><line x1="8" y1="17" x2="8" y2="3"></line><line x1="16" y1="20" x2="16" y2="6"></line></svg></div>
+          <span class="text-sm font-semibold navLabel">Carte des tiers</span>
+        </a>
+        <div class="h-px my-2 bg-slate-100"></div>
+        <a href="#" class="flex items-center gap-3 px-3 h-11 hover:bg-slate-50 transition" data-tip="Prospection">
+          <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="2" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="22"></line><line x1="2" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="22" y2="12"></line></svg></div>
+          <span class="text-sm font-semibold navLabel">Prospection</span>
+        </a>
+        <div class="h-px my-2 bg-slate-100"></div>
+        <a href="#" class="flex items-center gap-3 px-3 h-11 hover:bg-slate-50 transition" data-tip="Tournées">
+          <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 7 6 10 12 14 12 16 16 21 16"></polyline><circle cx="7" cy="6" r="2"></circle><circle cx="14" cy="12" r="2"></circle><circle cx="16" cy="16" r="2"></circle><circle cx="21" cy="16" r="2"></circle></svg></div>
+          <span class="text-sm font-semibold navLabel">Tournées</span>
+        </a>
+        <div class="h-px my-2 bg-slate-100"></div>
+        <a href="#" class="flex items-center gap-3 px-3 h-11 hover:bg-slate-50 transition" data-tip="Analyses">
+          <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="3" x2="3" y2="21"></line><line x1="3" y1="21" x2="21" y2="21"></line><rect x="6" y="12" width="3" height="6"></rect><rect x="11" y="9" width="3" height="9"></rect><rect x="16" y="5" width="3" height="13"></rect></svg></div>
+          <span class="text-sm font-semibold navLabel">Analyses</span>
+        </a>
+        <div class="h-px my-2 bg-slate-100"></div>
+        <a href="#parametres-carte" class="flex items-center gap-3 px-3 h-11 hover:bg-slate-50 transition" data-tip="Configuration">
+          <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></div>
+          <span class="text-sm font-semibold navLabel">Configuration</span>
+        </a>
+      </nav>
+    </aside>
+    <main class="flex-1 contentPad">
+      <div id="offres" class="mb-6 relative">
+        <div class="absolute -inset-x-4 -top-2 h-16 rounded-3xl bg-gradient-to-r from-brand-blue/10 to-brand-green/10 blur-xl"></div>
+        <div class="relative flex items-center gap-3">
+          <div class="px-2.5 h-6 rounded-full bg-gradient-to-r from-brand-blue to-brand-green text-white text-[11px] font-bold tracking-wide flex items-center">OFFRES</div>
+          <div>
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight m-0 bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">Packs CRM Cartographique</h1>
+            <p class="text-xs md:text-sm text-slate-500">Choisissez l’offre adaptée à vos besoins</p>
           </div>
         </div>
+        <div class="relative mt-3 h-[6px] w-32 rounded-full bg-gradient-to-r from-brand-blue to-brand-green"></div>
       </div>
-      <div class="px-6 pb-6 mt-4">
-        <button class="w-full h-11 rounded-xl text-white font-semibold bg-[#273d5b] hover:opacity-90 shadow-md transition">Choisir</button>
-      </div>
-    </article>
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 hideOnMenu">
+        <article class="glow group relative rounded-2xl border border-slate-200 bg-white shadow-card hover:shadow-cardHover hover:-translate-y-1 transition">
+          <span class="glow-border"><span class="glow-spot c1"></span><span class="glow-spot c2"></span></span>
+          <div class="flex items-center gap-3 px-6 pt-6">
+            <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow flex items-center justify-center text-lg">🥉</div>
+            <div>
+              <h2 class="text-[18px] m-0 font-semibold">Essentiel</h2>
+              <p class="text-xs text-slate-500">Démarrer avec la cartographie CRM</p>
+            </div>
+          </div>
+          <div class="px-6">
+            <div class="mt-3 text-2xl font-bold">250€ <span class="text-sm font-semibold text-slate-500">/ an</span></div>
+            <ul class="mt-3 space-y-2.5 text-sm">
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Carte clients & prospects</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Filtres avancés</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Fiche tiers avec carte</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Export géographique</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Compatible mobile</li>
+            </ul>
+            <div class="mt-2">
+              <button type="button" class="linkToggle text-xs font-semibold underline hover:opacity-80" data-toggle data-target="limits-essential-2">Voir limites</button>
+              <div id="limits-essential-2" class="mt-2 text-xs text-slate-600 hidden">
+                <div class="flex items-center gap-2"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>Optimisation des tournées</span></div>
+                <div class="flex items-center gap-2 mt-1"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>Heatmap CA</span></div>
+                <div class="flex items-center gap-2 mt-1"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>IA prédictive</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="px-6 pb-6 mt-4">
+            <button class="w-full h-11 rounded-xl text-white font-semibold bg-[#273d5b] hover:opacity-90 transition">Activer</button>
+          </div>
+        </article>
 
-    <article class="glow group relative rounded-2xl border border-amber-300/70 bg-white shadow-card hover:shadow-cardHover hover:-translate-y-1 transition">
-      <span class="glow-border"><span class="glow-spot c1"></span><span class="glow-spot c2"></span></span>
-      <div class="flex items-center gap-3 px-6 pt-6">
-        <div class="w-10 h-10 rounded-xl bg-white border border-amber-300/70 shadow flex items-center justify-center text-lg">🥇</div>
-        <div>
-          <h2 class="text-[18px] m-0 font-semibold">Entreprise</h2>
-          <p class="text-xs text-slate-500">Pilotage à l’échelle & intégrations</p>
-        </div>
-      </div>
-      <div class="px-6">
-        <div class="mt-3 text-2xl font-bold">Sur devis</div>
-        <ul class="mt-3 space-y-2.5 text-sm">
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Tout Pro</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Sectorisation intelligente</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>IA prédictive</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Suivi GPS terrain</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>API REST ouverte</li>
-          <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Multi-entités</li>
-        </ul>
-      </div>
-      <div class="px-6 pb-6 mt-4">
-        <button class="w-full h-11 rounded-xl font-semibold text-white bg-[#273d5b] hover:opacity-90 transition">Contact</button>
-      </div>
-    </article>
-  </div>
+        <article class="glow group relative rounded-2xl border border-slate-200 bg-white shadow-card hover:shadow-cardHover hover:-translate-y-1 transition">
+          <span class="glow-border"><span class="glow-spot c1"></span><span class="glow-spot c2"></span></span>
+          <div class="flex items-center gap-3 px-6 pt-6">
+            <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow flex items-center justify-center text-lg">🥈</div>
+            <div>
+              <h2 class="text-[18px] m-0 font-semibold">Pro</h2>
+              <p class="text-xs text-slate-500">Optimisation et ciblage avancés</p>
+            </div>
+          </div>
+          <div class="px-6">
+            <div class="mt-3 text-2xl font-bold">450€ <span class="text-sm font-semibold text-slate-500">/ an</span></div>
+            <ul class="mt-3 space-y-2.5 text-sm">
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Tout Essentiel</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Optimisation tournées</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Heatmap CA</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Ciblage par rayon</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Campagnes depuis carte</li>
+            </ul>
+            <div class="mt-2">
+              <button type="button" class="linkToggle text-xs font-semibold underline hover:opacity-80" data-toggle data-target="limits-pro-2">Voir limites</button>
+              <div id="limits-pro-2" class="mt-2 text-xs text-slate-600 hidden">
+                <div class="flex items-center gap-2"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>IA prédictive</span></div>
+                <div class="flex items-center gap-2 mt-1"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>API REST</span></div>
+                <div class="flex items-center gap-2 mt-1"><span class="bulletX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="6" y1="18" x2="18" y2="6"></line></svg></span><span>Multi-entités</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="px-6 pb-6 mt-4">
+            <button class="w-full h-11 rounded-xl text-white font-semibold bg-[#273d5b] hover:opacity-90 transition">Choisir</button>
+          </div>
+        </article>
 
-  <div class="section">
-    <div class="rounded-2xl border border-slate-200 bg-white shadow-card overflow-hidden">
-      <div class="flex items-center gap-3 px-6 h-[64px] cursor-pointer hover:bg-slate-50" data-toggle data-target="map-settings-content" aria-expanded="false">
+        <article class="glow group relative rounded-2xl border border-amber-300/70 bg-white shadow-card hover:shadow-cardHover hover:-translate-y-1 transition">
+          <span class="glow-border"><span class="glow-spot c1"></span><span class="glow-spot c2"></span></span>
+          <div class="flex items-center gap-3 px-6 pt-6">
+            <div class="w-10 h-10 rounded-xl bg-white border border-amber-300/70 shadow flex items-center justify-center text-lg">🥇</div>
+            <div>
+              <h2 class="text-[18px] m-0 font-semibold">Entreprise</h2>
+              <p class="text-xs text-slate-500">Pilotage à l’échelle & intégrations</p>
+            </div>
+          </div>
+          <div class="px-6">
+            <div class="mt-3 text-2xl font-bold">Sur devis</div>
+            <ul class="mt-3 space-y-2.5 text-sm">
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Tout Pro</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Sectorisation intelligente</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>IA prédictive</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Suivi GPS terrain</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>API REST ouverte</li>
+              <li class="flex items-center gap-2"><span class="bulletCheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>Multi-entités</li>
+            </ul>
+          </div>
+          <div class="px-6 pb-6 mt-4">
+            <button class="w-full h-11 rounded-xl font-semibold text-white bg-[#273d5b] hover:opacity-90 transition">Contact</button>
+          </div>
+        </article>
+      </div>
+  <div class="section" id="parametres-carte">
+    <div class="rounded-none border-0 bg-transparent shadow-none overflow-hidden">
+      <div class="flex items-center gap-3 px-6 h-[64px] cursor-pointer hover:bg-slate-50 border-b border-slate-100" data-toggle data-target="map-settings-content" aria-expanded="false">
         <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 8 3 16 6 23 3 23 17 16 20 8 17 1 20 1 6"></polygon><line x1="8" y1="17" x2="8" y2="3"></line><line x1="16" y1="20" x2="16" y2="6"></line></svg></div>
         <div>
           <h2 class="text-[18px] m-0 font-semibold">Paramètres carte</h2>
@@ -456,7 +517,7 @@ input,select{
           <input value="0.5" class="md:col-span-2 h-11 rounded-xl border border-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue/60" />
         </div>
         <div class="mt-6 flex items-center gap-3">
-          <a id="return-to-map" href="map-model.html" class="btnOutline btnInline h-11 px-4 rounded-xl flex items-center">Retour à la carte</a>
+          <a id="return-to-map" href="map.html" class="btnOutline btnInline h-11 px-4 rounded-xl flex items-center">Retour à la carte</a>
           <button class="btnInline h-11 px-4 rounded-xl bg-[#273d5b] text-white font-semibold shadow-md hover:opacity-90 transition">Sauvegarder la configuration</button>
         </div>
       </div>
@@ -464,8 +525,8 @@ input,select{
   </div>
 
   <div class="section">
-    <div class="rounded-2xl border border-slate-200 bg-white shadow-card overflow-hidden">
-      <div class="flex items-center gap-3 px-6 h-[64px] cursor-pointer hover:bg-slate-50" data-toggle data-target="advanced-options-content" aria-expanded="false">
+    <div class="rounded-none border-0 bg-transparent shadow-none overflow-hidden">
+      <div class="flex items-center gap-3 px-6 h-[64px] cursor-pointer hover:bg-slate-50 border-b border-slate-100" data-toggle data-target="advanced-options-content" aria-expanded="false">
         <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></div>
         <div>
           <h2 class="text-[18px] m-0 font-semibold">Options avancées</h2>
@@ -507,8 +568,8 @@ input,select{
   </div>
 
   <div class="section">
-    <div class="rounded-2xl border border-slate-200 bg-white shadow-card overflow-hidden">
-      <div class="flex items-center gap-3 px-6 h-[64px] cursor-pointer hover:bg-slate-50" data-toggle data-target="geocoding-status-content" aria-expanded="false">
+    <div class="rounded-none border-0 bg-transparent shadow-none overflow-hidden">
+      <div class="flex items-center gap-3 px-6 h-[64px] cursor-pointer hover:bg-slate-50 border-b border-slate-100" data-toggle data-target="geocoding-status-content" aria-expanded="false">
         <div class="iconAcc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-8-4.5-8-10a8 8 0 0 1 16 0c0 5.5-8 10-8 10z"></path><circle cx="12" cy="11" r="3"></circle></svg></div>
         <div>
           <h2 class="text-[18px] m-0 font-semibold">Statut géocodage</h2>
@@ -529,6 +590,8 @@ input,select{
       </div>
     </div>
   </div>
+    </main>
+  </div>
 </div>
 <script>
   document.querySelectorAll('[data-toggle]').forEach(function(el){
@@ -547,8 +610,46 @@ input,select{
   (function(){
     var a = document.getElementById('return-to-map');
     if(a && window && window.location){
-      a.setAttribute('href', window.location.origin.replace(/\/+$/,'') + '/map-model.html');
+      a.setAttribute('href', window.location.origin.replace(/\/+$/,'') + '/map.html');
     }
+  })();
+</script>
+<script>
+  (function(){
+    var s = document.getElementById('menu-search');
+    if(!s) return;
+    s.addEventListener('input', function(){
+      var q = s.value.toLowerCase().trim();
+      document.querySelectorAll('aside nav a').forEach(function(a){
+        var t = a.textContent.toLowerCase();
+        a.style.display = q ? (t.indexOf(q) > -1 ? '' : 'none') : '';
+      });
+    });
+  })();
+  (function(){
+    var b = document.getElementById('toggle-menu');
+    if(!b) return;
+    var s = document.getElementById('menu-search');
+    function showAllLinks(){ document.querySelectorAll('aside nav a').forEach(function(a){ a.style.display=''; }); }
+    var stored = localStorage.getItem('menuCollapsed');
+    var collapsed = (stored === null) ? true : (stored === '1');
+    if(stored === null){ localStorage.setItem('menuCollapsed', '1'); }
+    if(collapsed){
+      document.body.classList.add('menuCollapsed');
+      var ch=document.getElementById('menu-chevron'); if(ch) ch.style.transform='rotate(180deg)';
+      if(s){ s.disabled = true; s.value=''; showAllLinks(); }
+    } else {
+      if(s){ s.disabled = false; }
+    }
+    b.addEventListener('click', function(){
+      var on = document.body.classList.toggle('menuCollapsed');
+      localStorage.setItem('menuCollapsed', on ? '1' : '0');
+      var ch=document.getElementById('menu-chevron'); if(ch) ch.style.transform = on ? 'rotate(180deg)' : 'rotate(0deg)';
+      if(s){
+        s.disabled = on;
+        if(on){ s.value=''; showAllLinks(); }
+      }
+    });
   })();
 </script>
 </body>
